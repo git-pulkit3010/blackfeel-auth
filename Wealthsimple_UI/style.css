@@ -33,8 +33,12 @@ body, html { height: 100%; font-family: 'Manrope', sans-serif; color: #32302F; -
 .form-utils { margin: -10px 0 24px; text-align: right; }
 .text-link { font-size: 0.875rem; color: #32302F; text-decoration: underline; text-underline-offset: 4px; }
 
-.btn-primary { width: 100%; padding: 16px; background: #32302F; color: #fff; font-size: 1rem; font-weight: 600; border: none; border-radius: 30px; cursor: pointer; transition: 0.2s; }
+.button-group { display: flex; gap: 12px; width: 100%; }
+.btn-primary { flex: 1; padding: 16px; background: #32302F; color: #fff; font-size: 1rem; font-weight: 600; border: none; border-radius: 30px; cursor: pointer; transition: 0.2s; }
 .btn-primary:hover { background: #000; }
+
+.btn-google { display: flex; align-items: center; justify-content: center; width: 60px; height: 56px; background: #fff; border: 1px solid #E6E6E6; border-radius: 30px; cursor: pointer; transition: 0.2s; }
+.btn-google:hover { background: #F9F9F9; border-color: #D1D1D1; }
 
 .footer-link { margin-top: 32px; text-align: center; font-size: 0.95rem; }
 .footer-link a { color: #32302F; font-weight: 600; text-decoration: none; }
