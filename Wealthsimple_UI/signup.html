@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="split-screen">
         <section class="visual-side">
@@ -14,7 +16,8 @@
             <div class="brand-identity">
                 <div class="logo-container">
                     <svg class="swan-icon" viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M20 50 C 20 20, 50 10, 50 30 C 50 50, 80 50, 80 30" stroke="white" fill="none" stroke-width="3"/>
+                        <path d="M20 50 C 20 20, 50 10, 50 30 C 50 50, 80 50, 80 30" stroke="white" fill="none"
+                            stroke-width="3" />
                         <line x1="10" y1="55" x2="90" y2="55" stroke="white" stroke-width="2" />
                     </svg>
                     <span class="brand-name">BlackWeave</span>
@@ -33,32 +36,42 @@
                 <form id="signupForm">
                     <div class="input-group">
                         <label>Full Name</label>
-                        <input type="text" class="input-field" placeholder="Arjun Sharma" required>
+                        <input type="text" id="fullName" class="input-field" placeholder="Arjun Sharma" required>
                     </div>
                     <div class="input-group">
                         <label>Phone Number</label>
-                        <input type="tel" class="input-field" placeholder="+91 98765 43210" required>
+                        <input type="tel" id="phone" class="input-field" placeholder="+91 98765 43210" required>
                     </div>
                     <div class="input-group">
                         <label>Email</label>
-                        <input type="email" class="input-field" placeholder="name@example.com" required>
+                        <input type="email" id="email" class="input-field" placeholder="name@example.com" required>
                     </div>
                     <div class="input-group">
                         <label>Password</label>
-                        <input type="password" id="regPassword" class="input-field" placeholder="Create password" required>
+                        <input type="password" id="regPassword" class="input-field" placeholder="Create password"
+                            required>
                     </div>
                     <div class="input-group">
                         <label>Confirm Password</label>
-                        <input type="password" id="confirmPassword" class="input-field" placeholder="Repeat password" required>
+                        <input type="password" id="confirmPassword" class="input-field" placeholder="Repeat password"
+                            required>
                     </div>
                     <div class="button-group">
                         <button type="submit" class="btn-primary">Create account</button>
                         <button type="button" class="btn-google">
                             <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M19.6 10.227c0-.709-.064-1.39-.182-2.045H10v3.868h5.382c-.232 1.25-.936 2.309-1.995 3.018v2.51h3.232c1.891-1.742 2.981-4.305 2.981-7.35z" fill="#4285F4"/>
-                                <path d="M10 20c2.7 0 4.964-.895 6.618-2.423l-3.232-2.509c-.895.6-2.04.955-3.386.955-2.605 0-4.81-1.76-5.595-4.123H1.155v2.59A9.996 9.996 0 0010 20z" fill="#34A853"/>
-                                <path d="M4.405 11.9c-.2-.6-.314-1.24-.314-1.9s.114-1.3.314-1.9V5.51H1.155A9.996 9.996 0 000 10c0 1.63.391 3.173 1.082 4.532l3.323-2.632z" fill="#FBBC05"/>
-                                <path d="M10 3.968c1.47 0 2.786.505 3.823 1.495l2.868-2.868C14.959.945 12.695 0 10 0 6.1 0 2.732 2.232 1.082 5.51l3.323 2.632C5.19 5.727 7.395 3.968 10 3.968z" fill="#EA4335"/>
+                                <path
+                                    d="M19.6 10.227c0-.709-.064-1.39-.182-2.045H10v3.868h5.382c-.232 1.25-.936 2.309-1.995 3.018v2.51h3.232c1.891-1.742 2.981-4.305 2.981-7.35z"
+                                    fill="#4285F4" />
+                                <path
+                                    d="M10 20c2.7 0 4.964-.895 6.618-2.423l-3.232-2.509c-.895.6-2.04.955-3.386.955-2.605 0-4.81-1.76-5.595-4.123H1.155v2.59A9.996 9.996 0 0010 20z"
+                                    fill="#34A853" />
+                                <path
+                                    d="M4.405 11.9c-.2-.6-.314-1.24-.314-1.9s.114-1.3.314-1.9V5.51H1.155A9.996 9.996 0 000 10c0 1.63.391 3.173 1.082 4.532l3.323-2.632z"
+                                    fill="#FBBC05" />
+                                <path
+                                    d="M10 3.968c1.47 0 2.786.505 3.823 1.495l2.868-2.868C14.959.945 12.695 0 10 0 6.1 0 2.732 2.232 1.082 5.51l3.323 2.632C5.19 5.727 7.395 3.968 10 3.968z"
+                                    fill="#EA4335" />
                             </svg>
                         </button>
                     </div>
@@ -71,4 +84,5 @@
     </div>
     <script src="script.js"></script>
 </body>
+
 </html>

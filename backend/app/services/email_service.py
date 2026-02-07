@@ -122,31 +122,30 @@ async def send_verification_email(email: str, token: str) -> bool:
         return False
 
 
-async def verify_email_token(db: Session, token: str) -> Optional[int]:
+async def verify_email_token(db: Session, token: str) -> tuple[Optional[int], bool]:
     """
-    Verify email token and return user_id if valid.
-    Returns None if token is invalid, expired, or already used.
+    Verify email token and return (user_id, is_already_used).
+    Returns (None, False) if token is invalid or expired.
     """
-    from sqlalchemy import select
-    
-    # Note: Using synchronous query as we are using Session, not AsyncSession in the main setup
     verification_token = db.query(EmailVerificationToken).filter(
-        EmailVerificationToken.token == token,
-        EmailVerificationToken.is_used == False
+        EmailVerificationToken.token == token
     ).first()
     
     if not verification_token:
-        return None
+        return None, False
     
     # Check if token expired
     if datetime.utcnow() > verification_token.expires_at:
-        return None
+        return None, False
+    
+    if verification_token.is_used:
+        return verification_token.user_id, True
     
     # Mark token as used
     verification_token.is_used = True
     db.commit()
     
-    return verification_token.user_id
+    return verification_token.user_id, False
 
 
 async def resend_verification_email(db: Session, user_id: int, email: str) -> bool:

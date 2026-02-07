@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | BlackWeave</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .dashboard-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .logout-btn {
+            padding: 0.5rem 1rem;
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .logout-btn:hover {
+            background: #e5e7eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="brand-identity">
+                <div class="logo-container" style="display: flex; align-items: center; gap: 10px;">
+                    <svg class="swan-icon" width="40" height="24" viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 50 C 20 20, 50 10, 50 30 C 50 50, 80 50, 80 30" stroke="#000" fill="none" stroke-width="3"/>
+                        <line x1="10" y1="55" x2="90" y2="55" stroke="#000" stroke-width="2" />
+                    </svg>
+                    <span class="brand-name" style="color: #000; font-weight: 700; font-size: 1.2rem;">BlackWeave</span>
+                </div>
+            </div>
+            <button id="logoutBtn" class="logout-btn">Log out</button>
+        </header>
+
+        <main class="dashboard-content">
+            <h1>Welcome to your Dashboard</h1>
+            <div id="verificationMessage" style="display: none; margin-top: 1rem; padding: 1rem; background: #ecfdf5; color: #065f46; border-radius: 6px;">
+                Your email has been successfully verified!
+            </div>
+            <p style="margin-top: 1rem; color: #6b7280;">You are securely logged in.</p>
+        </main>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check for verified query param
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('verified') === 'true') {
+                document.getElementById('verificationMessage').style.display = 'block';
+                // Clean up URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+
+            // Check for access token
+            const cookies = document.cookie.split(';').reduce((acc, cookie) => {
+                const [key, value] = cookie.trim().split('=');
+                acc[key] = value;
+                return acc;
+            }, {});
+
+            // Simple logout
+            document.getElementById('logoutBtn').addEventListener('click', () => {
+                document.cookie = 'access_token=; Max-Age=0; path=/;';
+                document.cookie = 'refresh_token=; Max-Age=0; path=/api/auth/refresh;';
+                window.location.href = 'index.html';
+            });
+        });
+    </script>
+</body>
+</html>
