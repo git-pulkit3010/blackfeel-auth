@@ -13,3 +13,4 @@ redis
 httpx
 argon2-cffi
 slowapi
+phonenumbers

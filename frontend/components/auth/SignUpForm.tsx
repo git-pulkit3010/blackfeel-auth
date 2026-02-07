@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { GoogleOAuthButton } from './GoogleOAuthButton';
 import { VerificationPending } from './VerificationPending';
+import { formatPhoneNumber, isValidPhoneNumber } from '@/lib/utils/phone';
 
 export function SignUpForm() {
   const router = useRouter();
@@ -42,8 +43,8 @@ export function SignUpForm() {
       setError('Passwords do not match');
       return false;
     }
-    if (!/^\+?[1-9]\d{1,14}$/.test(formData.phone.replace(/[\s-]/g, ''))) {
-      setError('Please enter a valid phone number');
+    if (!isValidPhoneNumber(formData.phone)) {
+      setError('Please enter a valid phone number in international format (e.g., +919876543210)');
       return false;
     }
     return true;
@@ -87,12 +88,18 @@ export function SignUpForm() {
   };
 
   const handleChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+    if (field === 'phone') {
+      // Format phone number to ensure it's in E.164 format
+      const formattedValue = formatPhoneNumber(value);
+      setFormData((prev) => ({ ...prev, [field]: formattedValue }));
+    } else {
+      setFormData((prev) => ({ ...prev, [field]: value }));
+    }
     setError('');
   };
 
   if (showVerification) {
-    return <VerificationPending email={formData.email} />;
+    return <VerificationPending email={formData.email} phone={formData.phone} />;
   }
 
   return (

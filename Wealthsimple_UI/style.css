@@ -1,0 +1,42 @@
+/* Wealthsimple-inspired Minimalist Theme for BlackWeave */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body, html { height: 100%; font-family: 'Manrope', sans-serif; color: #32302F; -webkit-font-smoothing: antialiased; }
+
+.split-screen { display: flex; height: 100vh; width: 100vw; }
+
+/* LEFT VISUAL SIDE */
+.visual-side {
+    width: 50%; position: relative; display: flex; flex-direction: column;
+    justify-content: space-between; padding: 60px; color: white;
+    background: url('left_panel_background.png') center/cover;
+}
+.visual-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); }
+
+.logo-container { position: relative; z-index: 2; display: flex; align-items: center; gap: 15px; }
+.swan-icon { width: 50px; height: auto; }
+.brand-name { font-weight: 700; font-size: 1.6rem; letter-spacing: -0.02em; }
+
+.marketing-copy { position: relative; z-index: 2; max-width: 460px; }
+.marketing-copy h1 { font-size: 3.5rem; line-height: 1.1; font-weight: 600; margin-bottom: 24px; letter-spacing: -0.04em; }
+.marketing-copy p { font-size: 1.15rem; line-height: 1.6; opacity: 0.9; }
+
+/* RIGHT FORM SIDE */
+.form-side { width: 50%; display: flex; justify-content: center; align-items: center; background: #fff; padding: 40px; }
+.form-wrapper { width: 100%; max-width: 400px; }
+.form-header h2 { font-size: 2rem; font-weight: 600; margin-bottom: 32px; letter-spacing: -0.02em; }
+
+.input-group { margin-bottom: 20px; }
+.input-group label { display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 8px; }
+.input-field { width: 100%; padding: 14px 16px; font-size: 1rem; border: 1px solid #E6E6E6; border-radius: 8px; font-family: inherit; transition: border 0.2s; }
+.input-field:focus { border-color: #32302F; outline: none; box-shadow: 0 0 0 1px #32302F; }
+
+.form-utils { margin: -10px 0 24px; text-align: right; }
+.text-link { font-size: 0.875rem; color: #32302F; text-decoration: underline; text-underline-offset: 4px; }
+
+.btn-primary { width: 100%; padding: 16px; background: #32302F; color: #fff; font-size: 1rem; font-weight: 600; border: none; border-radius: 30px; cursor: pointer; transition: 0.2s; }
+.btn-primary:hover { background: #000; }
+
+.footer-link { margin-top: 32px; text-align: center; font-size: 0.95rem; }
+.footer-link a { color: #32302F; font-weight: 600; text-decoration: none; }
+
+@media (max-width: 900px) { .visual-side { display: none; } .form-side { width: 100%; } }

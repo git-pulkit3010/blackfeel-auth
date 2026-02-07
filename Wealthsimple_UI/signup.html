@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join | BlackWeave</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="split-screen">
+        <section class="visual-side">
+            <div class="visual-overlay"></div>
+            <div class="brand-identity">
+                <div class="logo-container">
+                    <svg class="swan-icon" viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 50 C 20 20, 50 10, 50 30 C 50 50, 80 50, 80 30" stroke="white" fill="none" stroke-width="3"/>
+                        <line x1="10" y1="55" x2="90" y2="55" stroke="white" stroke-width="2" />
+                    </svg>
+                    <span class="brand-name">BlackWeave</span>
+                </div>
+            </div>
+            <div class="marketing-copy">
+                <h1>Half code, Half culture.<br>Designed with AI. Felt in real life.</h1>
+            </div>
+        </section>
+
+        <section class="form-side">
+            <div class="form-wrapper">
+                <header class="form-header">
+                    <h2>Create account</h2>
+                </header>
+                <form id="signupForm">
+                    <div class="input-group">
+                        <label>Full Name</label>
+                        <input type="text" class="input-field" placeholder="Arjun Sharma" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Phone Number</label>
+                        <input type="tel" class="input-field" placeholder="+91 98765 43210" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Email</label>
+                        <input type="email" class="input-field" placeholder="name@example.com" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <input type="password" id="regPassword" class="input-field" placeholder="Create password" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Confirm Password</label>
+                        <input type="password" id="confirmPassword" class="input-field" placeholder="Repeat password" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Create account</button>
+                </form>
+                <footer class="footer-link">
+                    Already a member? <a href="index.html">Log in</a>
+                </footer>
+            </div>
+        </section>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
