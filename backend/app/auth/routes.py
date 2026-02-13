@@ -6,14 +6,16 @@ from sqlalchemy.orm import Session
 from ..database import get_db
 from . import schemas
 from .security import (
-    hash_password, 
-    verify_password, 
-    create_access_token, 
+    hash_password,
+    verify_password,
+    create_access_token,
     create_refresh_token,
     generate_csrf_token,
     check_account_lockout,
     record_failed_login,
-    record_successful_login
+    record_successful_login,
+    MAX_FAILED_ATTEMPTS,
+    LOCKOUT_DURATION_MINUTES
 )
 from .dal import create_user, get_user_by_email, update_user_password, get_user_by_id
 from ..services.email_service import (
@@ -198,12 +200,12 @@ async def signin(
     Sign in with email and password.
     Implements account lockout after 5 failed attempts.
     """
-    
+
     # Get user
     user = get_user_by_email(db, user_in.email)
     if not user:
         raise HTTPException(status_code=401, detail="Invalid credentials")
-    
+
     # Check account lockout
     is_locked, seconds_remaining = await check_account_lockout(db, user)
     if is_locked:
@@ -212,44 +214,44 @@ async def signin(
             status_code=429,
             detail=f"Account is locked due to too many failed login attempts. Try again in {minutes_remaining} minutes."
         )
-    
+
     # Check if email is verified
     if not user.is_verified:
         raise HTTPException(
             status_code=403,
             detail="Please verify your email address before signing in. Check your inbox for the verification link."
         )
-    
+
     # Verify password
     is_valid, new_hash = verify_password(user_in.password, user.password_hash)
-    
+
     if not is_valid:
         # Record failed attempt
         attempts, locked_until = await record_failed_login(db, user)
-        
+
         if locked_until:
             raise HTTPException(
                 status_code=429,
                 detail=f"Too many failed login attempts. Account locked for {LOCKOUT_DURATION_MINUTES} minutes."
             )
-        
+
         remaining_attempts = MAX_FAILED_ATTEMPTS - attempts
         raise HTTPException(
             status_code=401,
             detail=f"Invalid credentials. {remaining_attempts} attempts remaining before account lockout."
         )
-    
+
     # Successful login - reset failed attempts
     await record_successful_login(db, user)
-    
+
     # Rehash if needed (parameters updated)
     if new_hash:
         await update_user_password(db, user.id, new_hash)
-    
+
     # Create tokens
     access_token = create_access_token({"sub": str(user.id), "email": user.email})
     refresh_token = create_refresh_token({"sub": str(user.id)})
-    
+
     # Set cookies
     response.set_cookie(
         key="access_token",
@@ -260,7 +262,7 @@ async def signin(
         max_age=900,
         path="/"
     )
-    
+
     response.set_cookie(
         key="refresh_token",
         value=refresh_token,
@@ -270,6 +272,12 @@ async def signin(
         max_age=2592000,
         path="/api/auth/refresh"
     )
+
+    # Return token data to satisfy the response_model
+    return {
+        "access_token": access_token,
+        "token_type": "bearer"
+    }
     
 
 @router.get("/callback/google")
