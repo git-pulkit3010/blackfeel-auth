@@ -4,10 +4,9 @@ import { useState } from 'react';
 
 interface VerificationPendingProps {
   email: string;
-  phone?: string;
 }
 
-export function VerificationPending({ email, phone }: VerificationPendingProps) {
+export function VerificationPending({ email }: VerificationPendingProps) {
   const [resending, setResending] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -64,21 +63,13 @@ export function VerificationPending({ email, phone }: VerificationPendingProps) 
             We've sent a verification link to
             <br />
             <span className="font-medium text-gray-900">{email}</span>
-            {phone && (
-              <>
-                <br />
-                and via WhatsApp to
-                <br />
-                <span className="font-medium text-gray-900">{phone}</span>
-              </>
-            )}
           </p>
         </div>
 
         <div className="rounded-md bg-blue-50 p-4">
           <div className="text-sm text-blue-700">
             <p className="font-medium">Please verify your account to continue</p>
-            <p className="mt-1">Click the link in the email or WhatsApp message to activate your account.</p>
+            <p className="mt-1">Click the link in the email to activate your account.</p>
           </div>
         </div>
 

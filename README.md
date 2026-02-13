@@ -1,11 +1,11 @@
 # BlackFeel Sign-In Security Application
 
-A secure authentication system with email and WhatsApp verification, rate limiting, account lockout protection, and social login capabilities.
+A secure authentication system with email verification, rate limiting, account lockout protection, and social login capabilities.
 
 ## Features
 
 - **Secure Authentication**: Email/password sign-in with bcrypt hashing
-- **Multi-channel Verification**: Dual dispatch email and WhatsApp verification
+- **Email Verification**: Secure email verification system
 - **Rate Limiting**: Protection against brute force attacks
 - **Account Lockout**: Temporary lockout after multiple failed attempts
 - **Social Login**: Google OAuth integration with PKCE
@@ -74,8 +74,6 @@ REFRESH_TOKEN_EXPIRE_DAYS=30
 MAX_FAILED_ATTEMPTS=5
 LOCKOUT_DURATION_MINUTES=30
 FRONTEND_URL=http://localhost:3000
-WHATSAPP_API_URL=https://graph.facebook.com/v18.0/<phone-number-id>/messages
-WHATSAPP_TOKEN=your-whatsapp-token
 VERIFY_TOKEN=your-verify-token
 GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
@@ -171,8 +169,6 @@ blackfeel-signin-security/
 - `POST /api/auth/resend-verification` - Resend verification
 - `GET /api/auth/callback/google` - Google OAuth callback
 
-### WhatsApp Integration
-- `POST /api/whatsapp/webhook` - WhatsApp webhook endpoint
 
 ## Database Schema
 
@@ -246,7 +242,6 @@ npm run start
 1. **Database Connection Issues**: Verify PostgreSQL is running and credentials are correct
 2. **CORS Errors**: Check that frontend URL is included in CORS middleware origins
 3. **OAuth Issues**: Ensure redirect URIs match between application and OAuth provider
-4. **WhatsApp API**: Verify token and phone number ID are correctly configured
 
 ## Contributing
 

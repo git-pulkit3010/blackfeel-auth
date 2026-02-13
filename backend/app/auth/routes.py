@@ -27,8 +27,6 @@ from ..services.email_service import (
 import httpx
 from urllib.parse import urlencode
 import os
-from ..services.whatsapp import send_verification_whatsapp
-from ..utils.phone import format_phone_number
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 limiter = Limiter(key_func=get_remote_address)
@@ -64,23 +62,16 @@ async def signup(
     
     # Generate the shared verification token
     token = await generate_verification_token(db, user.id)
-    
-    # DUAL DISPATCH: Send both email and WhatsApp in the background
+
+    # Send verification email in the background
     background_tasks.add_task(send_verification_email, signup_data.email, token)
-    
-    if signup_data.phone:
-        # signup_data.phone is already formatted by the Pydantic validator (no + sign)
-        background_tasks.add_task(send_verification_whatsapp, 
-                                  to_phone=signup_data.phone,
-                                  token=token, 
-                                  user_email=signup_data.email)
-    
+
     return JSONResponse(
         status_code=201,
         content={
-            "message": "Account created. Please check your Email and WhatsApp to verify your account.",
+            "message": "Account created. Please check your email to verify your account.",
             "user_id": user.id,
-            "verification_sent": {"email": True, "whatsapp": bool(signup_data.phone)}
+            "verification_sent": {"email": True}
         }
     )
 
@@ -177,14 +168,10 @@ async def resend_verification(
     # Resend verification email
     token = await generate_verification_token(db, user.id)
     background_tasks.add_task(send_verification_email, user.email, token)
-    
-    if user.phone:
-        background_tasks.add_task(send_verification_whatsapp, user.phone, token, user.email)
-    
+
     return {
-        "message": "Verification link resent. Please check your Email and WhatsApp.",
-        "email_sent": True,
-        "whatsapp_sent": bool(user.phone)
+        "message": "Verification link resent. Please check your email.",
+        "email_sent": True
     }
 
 
