@@ -13,6 +13,7 @@ export function SignUpForm() {
     password: '',
     confirmPassword: '',
     phone: '',
+    termsAccepted: false,
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -47,6 +48,10 @@ export function SignUpForm() {
       setError('Please enter a valid phone number in international format (e.g., +919876543210)');
       return false;
     }
+    if (!formData.termsAccepted) {
+      setError('You must accept the Terms of Service and Privacy Policy');
+      return false;
+    }
     return true;
   };
 
@@ -69,6 +74,7 @@ export function SignUpForm() {
           email: formData.email,
           password: formData.password,
           phone: formData.phone,
+          terms_accepted: formData.termsAccepted,
         }),
       });
 
@@ -92,6 +98,9 @@ export function SignUpForm() {
       // Format phone number to ensure it's in E.164 format
       const formattedValue = formatPhoneNumber(value);
       setFormData((prev) => ({ ...prev, [field]: formattedValue }));
+    } else if (field === 'termsAccepted') {
+      // Handle checkbox boolean value
+      setFormData((prev) => ({ ...prev, [field]: value === 'true' }));
     } else {
       setFormData((prev) => ({ ...prev, [field]: value }));
     }
@@ -165,6 +174,30 @@ export function SignUpForm() {
           onChange={(e) => handleChange('confirmPassword', e.target.value)}
           disabled={loading}
         />
+      </div>
+
+      <div className="input-group">
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input
+            type="checkbox"
+            name="termsAccepted"
+            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+            checked={formData.termsAccepted}
+            onChange={(e) => handleChange('termsAccepted', e.target.checked.toString())}
+            disabled={loading}
+            required
+          />
+          <span className="text-sm text-gray-700">
+            I agree to the{' '}
+            <a href="/terms" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+              Terms of Service
+            </a>
+            {' '}and{' '}
+            <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+              Privacy Policy
+            </a>
+          </span>
+        </label>
       </div>
 
       <div className="button-group">

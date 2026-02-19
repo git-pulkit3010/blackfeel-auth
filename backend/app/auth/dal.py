@@ -11,15 +11,17 @@ async def get_user_by_id(db: Session, user_id: int) -> Optional[models.User]:
     """Get user by ID"""
     return db.get(models.User, user_id)
 
-async def create_user(db: Session, email: str, password_hash: str, phone: str = None):
+async def create_user(db: Session, email: str, password_hash: str, phone: str = None, terms_accepted: bool = False):
     # Note: caller should handle hashing
     # Format phone number to ensure it's in E.164 format before storing
     formatted_phone = format_phone_number(phone) if phone else None
-    
+
     db_user = models.User(
         email=email,
         password_hash=password_hash,
-        phone=formatted_phone
+        phone=formatted_phone,
+        terms_accepted=terms_accepted,
+        terms_accepted_at=datetime.utcnow() if terms_accepted else None
     )
     db.add(db_user)
     db.commit()
