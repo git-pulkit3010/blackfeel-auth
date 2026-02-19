@@ -7,9 +7,11 @@ from sqlalchemy.orm import Session
 from .models import User
 import secrets
 
-# These should ideally come from env vars
-SECRET_KEY = "your_access_token_secret_here"
-REFRESH_SECRET_KEY = "your_refresh_token_secret_here"
+import os
+
+# Use environment variables for secrets
+SECRET_KEY = os.getenv("JWT_SECRET_KEY", "fallback_access_token_secret_for_dev_only")
+REFRESH_SECRET_KEY = os.getenv("JWT_REFRESH_SECRET_KEY", "fallback_refresh_token_secret_for_dev_only")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 REFRESH_TOKEN_EXPIRE_DAYS = 30
@@ -55,8 +57,38 @@ def create_refresh_token(data: dict, expires_delta: Optional[timedelta] = None):
     encoded_jwt = jwt.encode(to_encode, REFRESH_SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
+def decode_access_token(token: str) -> Optional[dict]:
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        return payload
+    except JWTError:
+        return None
+
+def decode_refresh_token(token: str) -> Optional[dict]:
+    try:
+        payload = jwt.decode(token, REFRESH_SECRET_KEY, algorithms=[ALGORITHM])
+        return payload
+    except JWTError:
+        return None
+
 def generate_csrf_token():
     return secrets.token_urlsafe(32)
+
+from fastapi import Request, HTTPException
+
+async def verify_csrf(request: Request):
+    """
+    Verify CSRF token from header against cookie.
+    Used for state-changing requests (POST, PUT, DELETE, etc.).
+    """
+    if request.method in ["GET", "HEAD", "OPTIONS"]:
+        return
+
+    csrf_token_cookie = request.cookies.get("csrf_token")
+    csrf_token_header = request.headers.get("X-CSRF-Token")
+
+    if not csrf_token_cookie or not csrf_token_header or csrf_token_cookie != csrf_token_header:
+        raise HTTPException(status_code=403, detail="CSRF token validation failed")
 
 # Account lockout configuration
 MAX_FAILED_ATTEMPTS = 5
