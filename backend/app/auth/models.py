@@ -9,20 +9,24 @@ class User(Base):
     email = Column(String, unique=True, index=True, nullable=False)
     password_hash = Column(String, nullable=True)
     phone = Column(String, nullable=True)
-    
+
     # OAuth fields
     oauth_provider = Column(String, nullable=True)
     oauth_id = Column(String, nullable=True)
-    
+
     # Security fields
     is_active = Column(Boolean, default=True)
     is_verified = Column(Boolean, default=False)  # Email verification status
-    
+
     # Account lockout fields
     failed_login_attempts = Column(Integer, default=0)
     locked_until = Column(DateTime, nullable=True)
     last_failed_attempt = Column(DateTime, nullable=True)
-    
+
+    # Terms acceptance
+    terms_accepted = Column(Boolean, default=False)
+    terms_accepted_at = Column(DateTime, nullable=True)
+
     # Timestamps
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())

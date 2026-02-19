@@ -54,23 +54,60 @@ async def signup(
     background_tasks: BackgroundTasks,
     db: Session = Depends(get_db)
 ):
+    # Verify terms acceptance (defense in depth - schema also validates this)
+    if not signup_data.terms_accepted:
+        raise HTTPException(
+            status_code=400,
+            detail="You must accept the Terms of Service and Privacy Policy to continue"
+        )
+
     # Check if user already exists
     existing_user = get_user_by_email(db, signup_data.email)
     if existing_user:
-        raise HTTPException(
-            status_code=400,
-            detail="A user with this email already exists"
-        )
+        # If user exists but is not verified, allow re-signup by updating their record
+        if not existing_user.is_verified:
+            # Update the user with new password hash and phone
+            existing_user.password_hash = hash_password(signup_data.password)
+            existing_user.phone = signup_data.phone
+            existing_user.terms_accepted = signup_data.terms_accepted
+            existing_user.terms_accepted_at = datetime.utcnow()
+            # Reset verification status to ensure they get a new verification email
+            existing_user.is_verified = False
+            existing_user.is_active = False
+            db.commit()
+            
+            # Generate new verification token and send email
+            token = await generate_verification_token(db, existing_user.id)
+            background_tasks.add_task(send_verification_email, signup_data.email, token)
+            
+            csrf_token = generate_csrf_token()
+            
+            return JSONResponse(
+                status_code=200,
+                content={
+                    "message": "Account updated. Please check your email to verify your account.",
+                    "user_id": existing_user.id,
+                    "verification_sent": {"email": True},
+                    "csrf_token": csrf_token
+                }
+            )
+        else:
+            # User exists and is verified - reject signup
+            raise HTTPException(
+                status_code=400,
+                detail="A user with this email already exists"
+            )
     
     # Hash password
     hashed_password = hash_password(signup_data.password)
-    
+
     # Create user (is_verified=False by default)
     user = await create_user(
         db,
         email=signup_data.email,
         password_hash=hashed_password,
-        phone=signup_data.phone
+        phone=signup_data.phone,
+        terms_accepted=signup_data.terms_accepted
     )
     
     # Generate the shared verification token
