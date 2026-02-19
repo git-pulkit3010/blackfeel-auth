@@ -38,3 +38,6 @@ backend/**/__pycache__/
 
 backend/app/services/__pycache__/
 frontend/.next/
+
+DEV_README.md
+latest_changes.md
