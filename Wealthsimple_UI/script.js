@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json();
 
                 if (response.ok) {
-                    alert("Account created! Please check your email/WhatsApp to verify your account.");
+                    alert("Account created! Please check your email to verify your account.");
                     window.location.href = 'index.html';
                 } else {
                     showError(signupForm, data.detail || "Signup failed");
