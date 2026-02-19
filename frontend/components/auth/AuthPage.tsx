@@ -8,27 +8,40 @@ export function AuthPage() {
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            {mode === 'signin' ? 'Sign in to your account' : 'Create your account'}
-          </h2>
+
+    <div className="split-screen">
+      <section className="visual-side">
+        <div className="visual-overlay"></div>
+        <div className="brand-identity">
+          <div className="logo-container">
+            <svg className="swan-icon" viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 50 C 20 20, 50 10, 50 30 C 50 50, 80 50, 80 30" stroke="white" fill="none" strokeWidth="3" />
+              <line x1="10" y1="55" x2="90" y2="55" stroke="white" strokeWidth="2" />
+            </svg>
+            <span className="brand-name">BlackWeave</span>
+          </div>
         </div>
+        <div className="marketing-copy">
+          <h1>Half code, Half culture.<br />Designed with AI. Felt in real life.</h1>
+        </div>
+      </section>
 
-        {mode === 'signin' ? <SignInForm /> : <SignUpForm />}
+      <section className="form-side">
+        <div className="form-wrapper">
+          <header className="form-header">
+            <h2>{mode === 'signin' ? 'Welcome Back!' : 'Create account'}</h2>
+          </header>
 
-        <div className="text-center">
-          <button
-            onClick={() => setMode(mode === 'signin' ? 'signup' : 'signin')}
-            className="text-sm text-blue-600 hover:text-blue-500"
-          >
+          {mode === 'signin' ? <SignInForm /> : <SignUpForm />}
+
+          <footer className="footer-link">
             {mode === 'signin'
-              ? "Don't have an account? Sign up"
-              : 'Already have an account? Sign in'}
-          </button>
+              ? <>New to BlackWeave? <button onClick={() => setMode('signup')}>Sign up</button></>
+              : <>Already a member? <button onClick={() => setMode('signin')}>Log in</button></>
+            }
+          </footer>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

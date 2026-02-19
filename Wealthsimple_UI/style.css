@@ -1,29 +1,14 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Wealthsimple-inspired Minimalist Theme for BlackWeave */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body, html { height: 100%; font-family: 'Manrope', sans-serif; color: #32302F; -webkit-font-smoothing: antialiased; }
 
-/* Wealthsimple-inspired Minimalist Theme */
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap');
-
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-body {
-  font-family: 'Manrope', sans-serif;
-  color: #32302F;
-  -webkit-font-smoothing: antialiased;
-}
-
-.split-screen { display: flex; min-height: 100vh; width: 100vw; }
+.split-screen { display: flex; height: 100vh; width: 100vw; }
 
 /* LEFT VISUAL SIDE */
 .visual-side {
     width: 50%; position: relative; display: flex; flex-direction: column;
     justify-content: space-between; padding: 60px; color: white;
-    background: url('/left_panel_background.png') center/cover;
+    background: url('left_panel_background.png') center/cover;
 }
 .visual-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); }
 
@@ -56,6 +41,6 @@ body {
 .btn-google:hover { background: #F9F9F9; border-color: #D1D1D1; }
 
 .footer-link { margin-top: 32px; text-align: center; font-size: 0.95rem; }
-.footer-link button { color: #32302F; font-weight: 600; text-decoration: none; background: none; border: none; cursor: pointer; font-size: inherit; font-family: inherit; }
+.footer-link a { color: #32302F; font-weight: 600; text-decoration: none; }
 
 @media (max-width: 900px) { .visual-side { display: none; } .form-side { width: 100%; } }

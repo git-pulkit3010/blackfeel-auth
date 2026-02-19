@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from . import models, schemas, security
+from ..utils.phone import format_phone_number
 from typing import Optional
 
 def get_user_by_email(db: Session, email: str):
@@ -11,10 +12,13 @@ async def get_user_by_id(db: Session, user_id: int) -> Optional[models.User]:
 
 async def create_user(db: Session, email: str, password_hash: str, phone: str = None):
     # Note: caller should handle hashing
+    # Format phone number to ensure it's in E.164 format before storing
+    formatted_phone = format_phone_number(phone) if phone else None
+    
     db_user = models.User(
         email=email,
         password_hash=password_hash,
-        phone=phone
+        phone=formatted_phone
     )
     db.add(db_user)
     db.commit()
